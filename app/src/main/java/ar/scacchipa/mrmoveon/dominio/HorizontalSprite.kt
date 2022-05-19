@@ -8,7 +8,9 @@ data class HorizontalSprite(
     private val icon: String = "H",
     private val board: Board
 ): ISprite {
-    override fun getPos() = PointF(posX, posY)
+    override fun getPos():PointF {
+        return PointF(posX, posY)
+    }
     override fun getIcon(): String {
         return icon
     }
