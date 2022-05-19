@@ -10,14 +10,15 @@ data class ControlSprite(
     private val posY: Float = 5.0f,
     private val icon: String = "V",
     private val board: Board,
-    private val viewModel: BoardViewModel
+    private val viewModel: BoardViewModel? = null
 ): ISprite, IControlable {
+
     override fun getPos() = PointF(posX, posY)
     override fun getIcon(): String {
         return icon
     }
     override fun getDirection(): Double? {
-        return viewModel.getDirection()
+        return viewModel?.getDirection()
     }
     override fun move(): ControlSprite {
        getDirection()?.let { dir ->

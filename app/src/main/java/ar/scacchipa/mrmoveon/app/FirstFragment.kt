@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ar.scacchipa.mrmoveon.R
 import ar.scacchipa.mrmoveon.databinding.FragmentFirstBinding
-import ar.scacchipa.mrmoveon.dominio.*
 import ar.scacchipa.mrmoveon.viewmodel.BoardViewModel
 import kotlinx.coroutines.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.PI
 
 /**
@@ -21,7 +20,7 @@ class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
 
-    private val boardVM: BoardViewModel by viewModels()
+    private val boardVM: BoardViewModel by viewModel()
     private var ticker: Job? = null
 
     override fun onCreateView(
@@ -29,17 +28,6 @@ class FirstFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
-
-        val board = Board()
-        boardVM.setBoard(board)
-
-        boardVM.addSprite( QuiteSprite(10f, 20f, "X") )
-        boardVM.addSprite( QuiteSprite(5.0f, 10.0f) )
-        boardVM.addSprite( QuiteSprite(10.0f, 10.0f) )
-        boardVM.addSprite( HorizontalSprite(3f, 3f, "H", board ))
-        boardVM.addSprite( VerticalSprite(8f, 3f, "V", board ))
-        boardVM.addSprite( CircularSprite( 8f, 8f, "O", board, 0.0))
-        boardVM.addControlSprite( ControlSprite( 11f, 11f, "C", board, boardVM))
 
         ticker = CoroutineScope(Dispatchers.Main).launch {
             while (true) {
@@ -60,7 +48,6 @@ class FirstFragment : Fragment() {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
         _binding?.root?.setOnTouchListener { view,  motionEvent ->
-
             val xRel = motionEvent.rawX / view.width
             val yRel = motionEvent.rawY / view.height
             var degree = when {

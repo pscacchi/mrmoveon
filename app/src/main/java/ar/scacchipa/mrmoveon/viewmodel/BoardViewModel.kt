@@ -9,11 +9,24 @@ import ar.scacchipa.mrmoveon.dominio.Board
 import ar.scacchipa.mrmoveon.dominio.ControlSprite
 import ar.scacchipa.mrmoveon.dominio.ISprite
 
-class BoardViewModel: ViewModel() {
+class BoardViewModel(
+    initialBoard: Board,
+    initialSprites: List<ISprite> = listOf(),
+    initialControlSprites: List<ControlSprite> = listOf()
+): ViewModel() {
     private val boardLD = MutableLiveData<Board>()
     private val spritesLD = MutableLiveData( listOf<ISprite>() )
-    private val controlSpitesLD = MutableLiveData( listOf<ControlSprite>())
+    private val controlSpitesLD = MutableLiveData( listOf<ControlSprite>() )
     private val directionLD = MutableLiveData<Double>()
+
+    init {
+        boardLD.value = initialBoard
+        spritesLD.value = initialSprites
+        controlSpitesLD.value = initialControlSprites.map { controlSprite ->
+            controlSprite.copy(viewModel = this)
+        }
+    }
+
     fun getSprites():List<ISprite> {
         return spritesLD.value?:listOf()
     }
